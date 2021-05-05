@@ -15,7 +15,7 @@ firebase.initializeApp({
     measurementId: "G-S2CFBCSTGH"
 })
 
-// const firestore = firebase.firestore();
+const firestore = firebase.firestore();
 
 
 export const useAuth = () => {
@@ -23,8 +23,12 @@ export const useAuth = () => {
         firebase.auth().createUserWithEmailAndPassword(user.email, user.password)
             .then((userCredential) => {
                 // Signed in
-                let user = userCredential.user;
-                console.log(user)
+                // let user = userCredential.user;
+                firestore.collection('users').doc(user.email).set(user).then(() => {
+                    console.log("Document successfully written!");
+                }).catch((error) => {
+                    console.error("Error writing document: ", error);
+                })
             })
             .catch((error) => {
                 console.log(error.message)
