@@ -11,11 +11,13 @@ import TodoForm from "./components/TodoForm";
 import TodoList from "./components/TodoList";
 import {useState} from "react";
 import LoginForm from "./components/LoginForm";
-import {Button} from "@material-ui/core";
+import SnackbarMsg from "./components/Snackbar";
 
 
 function App() {
     const [open, setOpen] = useState(false);
+    const [snackBarOpen, setSnackBarOpen] = useState(false)
+
 
     const handleOpen = () => {
         setOpen(true);
@@ -24,6 +26,10 @@ function App() {
     const handleClose = (value) => {
         setOpen(false);
     };
+
+    const handleSnackBarOpen = () => {
+        setSnackBarOpen(true)
+    }
 
   return (
       <div>
@@ -42,6 +48,8 @@ function App() {
               </Switch>
           </Router>
           <LoginForm open={open} onClose={handleClose} />
+          <button onClick={handleSnackBarOpen}></button>
+          <SnackbarMsg snackBarOpen={snackBarOpen} setSnackBarOpen={setSnackBarOpen}/>
       </div>
 
 

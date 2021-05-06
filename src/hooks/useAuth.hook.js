@@ -1,7 +1,8 @@
-import {useCallback} from "react";
+import {useCallback, useState} from "react";
 import firebase from 'firebase/app';
 import 'firebase/firestore';
 import 'firebase/auth';
+import {Snackbar} from "@material-ui/core";
 // import { useAuthState } from "react-firebase-hooks/auth";
 // import { useCollectionData } from "react-firebase-hooks/firestore";
 
@@ -19,6 +20,12 @@ const firestore = firebase.firestore();
 
 
 export const useAuth = () => {
+    const [err, setErr] = useState(false)
+
+    const handleSnackBarClose = () => {
+        setErr(false)
+    }
+
     const register = useCallback((user) => {
         firebase.auth().createUserWithEmailAndPassword(user.email, user.password)
             .then((userCredential) => {
@@ -43,7 +50,16 @@ export const useAuth = () => {
                 localStorage.setItem('token', token);
             })
             .catch((error) => {
-                console.log(error.message);
+                console.log('ERROR', error.message);
+                setErr(true)
+                return (
+                    <Snackbar
+                        anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
+                        open={err}
+                        onClose={handleSnackBarClose}
+                        message="I love snacks"
+                    />
+                )
             });
     }, [])
 
